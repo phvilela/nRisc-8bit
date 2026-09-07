@@ -20,11 +20,11 @@ module test_RegMem;
     .out2(out2)
   );
 
-  // Geração do Clock (período de 10 unidades de tempo)
+  // Geracao do Clock (periodo de 10 unidades de tempo)
   always #5 clock = ~clock;
 
   initial begin
-    // INSTRUÇÕES PARA O GTKWAVE:
+    // INSTRUÇOES PARA O GTKWAVE:
     $dumpfile("ondas.vcd");    // Nome do arquivo gerado
     $dumpvars(0, test_RegMem); // Salva as variáveis deste módulo e submódulos
 

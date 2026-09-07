@@ -30,11 +30,3 @@ module RegMem(
   end
 
 endmodule
-
-
-
-
-
-
-
-
