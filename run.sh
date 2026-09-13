@@ -1,2 +1,2 @@
-iverilog src/* test/test-fib.v
+iverilog src/* test/fib-test.v
 vvp ./a.out

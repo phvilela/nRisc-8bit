@@ -6,7 +6,7 @@ module processador(input clock);
   wire [1:0] reg1_sel = instrucao[4:3];
   wire [1:0] reg2_sel = instrucao[2:1];
   wire [1:0] destino_sel;
-  wire [7:0] imediato_ext = {3'b000, instrucao[4:0]};
+  wire [7:0] imediato_ext = {4'b0, instrucao[3:0]};
   wire [7:0] dado_escrever;
 
   wire [7:0] dado1, dado2, saida_ula, saida_mem, proxPC, PCatual,imediatoULA;
@@ -101,4 +101,3 @@ assign destino_sel = (RegDst == 2'b00) ? instrucao[2:1] :
                          saida_ula;
 
 endmodule
-

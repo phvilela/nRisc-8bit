@@ -38,6 +38,8 @@ module testbench_processador;
         uut.mem_inst.mem[11] = 8'b01011000;
         uut.mem_inst.mem[12] = 8'b11110001;
         uut.mem_inst.mem[13] = 8'b01111110;
+
+        uut.mem_dados.mem[1] = 0;
         
         $monitor("Time=%0t PC=%h Inst=%h Op=%b Fn=%b R0=%h R1=%h R2=%h ULA=%h Z=%b C1=%b Mem[1]=%d",
                  $time, uut.PCatual, uut.instrucao, uut.opcode, uut.funct,
