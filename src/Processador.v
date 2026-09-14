@@ -6,7 +6,6 @@ module processador(input clock);
   wire [1:0] reg1_sel = instrucao[4:3];
   wire [1:0] reg2_sel = instrucao[2:1];
   wire [1:0] destino_sel;
-  wire [7:0] imediato_ext = {4'b0, instrucao[3:0]};
   wire [7:0] dado_escrever;
 
   wire [7:0] dado1, dado2, saida_ula, saida_mem, proxPC, PCatual,imediatoULA;
@@ -15,9 +14,9 @@ module processador(input clock);
 
   wire c1, hab_comp, zero, in_comp;
 
-  assign proxPC = (c1 && desvio) ?
-                   (instrucao[4] ? (PCatual - imediato_ext) : (PCatual + imediato_ext)) :
-                   (PCatual + 8'd1);
+  wire [7:0] imediato_ext = {{3{instrucao[4]}}, instrucao[4:0]};
+  wire [7:0] pc_inc       = PCatual + 8'd1;
+  assign proxPC = (c1 && desvio) ? (pc_inc + imediato_ext) : pc_inc;
 
   PC PC_reg(.PCin(proxPC), .clock(clock), .PCout(PCatual));
 
@@ -40,12 +39,11 @@ module processador(input clock);
     .desvio(desvio)
   );
 
-assign destino_sel = (RegDst == 2'b00) ? instrucao[2:1] :
+  assign destino_sel = (RegDst == 2'b00) ? instrucao[2:1] :
                        (RegDst == 2'b01) ? instrucao[4:3] :
                        2'b00;
 
-
-  	RegMem regs(
+  BancoReg registradores(
     .clock(clock),
     .escreve(regWrite),
     .dado(dado_escrever),

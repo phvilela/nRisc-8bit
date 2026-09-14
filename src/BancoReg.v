@@ -1,4 +1,4 @@
-module RegMem(
+module BancoReg(
   input clock,
   input escreve,
   input [7:0] dado,

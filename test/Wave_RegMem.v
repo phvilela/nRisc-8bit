@@ -9,7 +9,7 @@ module test_RegMem;
   wire [7:0] out1;
   wire [7:0] out2;
 
-  RegMem alfa(
+  BancoReg alfa(
     .clock(clock),
     .escreve(escreve),
     .dado(dado),
