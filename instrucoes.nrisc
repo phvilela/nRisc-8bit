@@ -11,7 +11,7 @@
 # setc1(0-2 / 5-7)
 # jc(0-2) loop(3-7) // o valor de loop é -8, pois está 8 instruções antes da seguinte
 # set (0-1) $t3 (2-3), 1 (4-7)
-# sw(0-2 / 7) $t3(3-4) , $t3 (5-6)
+# sw(0-2 / 7) $t1(3-4) , $t3 (5-6)
 
 Binário:
 11 11 0000
@@ -27,4 +27,4 @@ Binário:
 101 xx 010
 010 11000
 11 11 0001
-011 11 11 0
+011 01 11 0

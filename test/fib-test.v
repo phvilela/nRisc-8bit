@@ -46,8 +46,6 @@ module testbench_processador;
         uut.mem_inst.mem[11] = 8'b01011000;
         uut.mem_inst.mem[12] = 8'b11110001;  // set $t3, 1       (endereco de escrita)
         uut.mem_inst.mem[13] = 8'b01101110;  // sw $t1, $t3      (mem[1] = fib(n))
-        uut.mem_inst.mem[14] = 8'b11111010;  // set $t3, 10      (debug: endereco 10)
-        uut.mem_inst.mem[15] = 8'b01111110;  // sw $t3, $t3      (debug: mem[10] = 10)
 
         uut.mem_dados.mem[1] = 0;
         

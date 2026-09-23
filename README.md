@@ -204,9 +204,7 @@ index, the second receives the computed value).
 | 0x0A | `0xA2` | `setc1` | `$c1 = 1` |
 | 0x0B | `0x58` | `jc −8` | jump back to `loop` |
 | 0x0C | `0xF1` | `set $t3, 1` | fim: `$t3 = 1` (result address) |
-| 0x0D | `0x6E` | `sw $t1, $t3` | `mem[1] = $t1 = fib(n)` |
-| 0x0E | `0xFA` | `set $t3, 10` | debug: address `0x0A` |
-| 0x0F | `0x7E` | `sw $t3, $t3` | debug: `mem[10] = 10` |
+| 0x0D | `0x6E` | `sw $t1, $t3` | `mem[1] = $t1 = fib(n)` — the only data-memory write |
 
 With `n = 10` (default) the simulation ends with:
 
@@ -214,28 +212,4 @@ With `n = 10` (default) the simulation ends with:
 fib(10) = 55 (mem[1])
 ```
 
-i.e. `mem[1] = 55 = fib(10)`; the debug store leaves `mem[10] = 10`.
 Other examples: `./run.sh 12` → `fib(12) = 144`, `./run.sh 13` → `fib(13) = 233`.
-
-### Note on the `sw` encoding
-
-The binary listing in `intrucoes.pdf` / `instrucoes.nrisc` encodes the final
-store as `sw $t3, $t3` (`0x7E`), which would store the *address register*
-itself. The assembly listing in the same document specifies
-`sw $t1, $t3` ("loads the result `t1` into the second data word"). The test
-follows the assembly semantics (`011 01 11 0` = `0x6E`) so that `mem[1]`
-receives `fib(n)`.
-
-## Implementation Notes
-
-- Register file reads and data-memory reads are **combinational**. Reads
-  clocked on the posedge would sample the register-select fields of the
-  *previous* instruction (the PC and the fields change on the same edge),
-  producing operands one instruction late.
-- Register-file and data-memory writes happen on the **negedge**, so a `lw`
-  commits its value in the same cycle it executes; `sw` writes with the
-  address/data of its own cycle.
-- The `$c1` flag is written on the negedge, so `cmp0`/`setc1` immediately
-  precede a `jc` that consumes the flag on the next posedge.
-- `jc` uses a signed 5-bit relative offset in two's complement
-  (`fim = +6`, `loop = −8` in the example).
