@@ -4,16 +4,12 @@ module DadosMem(
   input MemRead,
   input [7:0] endereco,
   input [7:0] dado,
-  output reg [7:0] saida
+  output [7:0] saida
 );
 
   reg [7:0] mem [0:255];
 
-  always @(posedge clock) begin
-    if (MemRead) begin
-      saida <= mem[endereco];
-    end
-  end
+  assign saida = MemRead ? mem[endereco] : 8'b0;
 
   always @(negedge clock) begin
     if (MemWrite) begin

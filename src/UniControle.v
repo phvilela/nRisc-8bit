@@ -115,7 +115,7 @@ module UniControle(
                         memRead = 1'b1;
                         inA = 1'b0;
                         inB = 2'b00;
-                        RegDst = 2'b00;
+                        RegDst = 2'b01;
                         regWrite = 1'b1;
                     end
                 endcase
@@ -123,7 +123,7 @@ module UniControle(
             
             3'b100: begin
                 casex (funct)
-                	3'bxx0: begin
+                 	3'bxx0: begin
                         memOut = 1'b0;
                         memWrite = 1'b0;
                         memRead = 1'b0;
@@ -134,7 +134,7 @@ module UniControle(
                         atribui = 1'b1;
                         ULAop = 2'b01;
                         desvio = 1'b0;
-                        RegDst = 2'b00;
+                        RegDst = 2'b01;
                         regWrite = 1'b1;
                         end
                      endcase
@@ -160,13 +160,13 @@ module UniControle(
                         end
 
                     //sub1
-                	3'b001: begin
+                 	3'b001: begin
                         Opc1 = 2'b00;
                         WriteC1 = 1'b0;
                         inA = 1'b0;
                         inB = 2'b10;
                         ULAop = 2'b00;
-                        RegDst = 2'b00;
+                        RegDst = 2'b01;
                         regWrite = 1'b1;
                       end
                     3'b010: begin
@@ -184,8 +184,8 @@ module UniControle(
 
             3'b11x: begin
                 memOut = 1'b0;
-    			memWrite = 1'b0;
-    			memRead = 1'b0;
+     			memWrite = 1'b0;
+     			memRead = 1'b0;
                 desvio = 1'b0;
                 atribui = 1'b0;
                 Opc1 = 2'b00;
@@ -193,7 +193,7 @@ module UniControle(
                 inA = 1'b1;
                 inB = 2'b01;
                 ULAop = 2'b01;
-                RegDst = 2'b01;
+                RegDst = 2'b11;
                 regWrite = 1'b1;
             end
 

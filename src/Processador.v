@@ -41,7 +41,8 @@ module processador(input clock);
 
   assign destino_sel = (RegDst == 2'b00) ? instrucao[2:1] :
                        (RegDst == 2'b01) ? instrucao[4:3] :
-                       2'b00;
+                       (RegDst == 2'b10) ? 2'b00 :
+                       instrucao[5:4];
 
   BancoReg registradores(
     .clock(clock),
@@ -54,7 +55,7 @@ module processador(input clock);
     .out2(dado2)
   );
 
-  assign imediatoULA = {2'b00,instrucao[5:0]};
+  assign imediatoULA = {4'b0000,instrucao[3:0]};
 
   wire [7:0] operando_a = (inA == 0) ? (atribui ? dado2 : dado1):
   						  imediatoULA;

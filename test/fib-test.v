@@ -36,19 +36,19 @@ module testbench_processador;
         uut.mem_inst.mem[9]  = 8'b10111001;
         uut.mem_inst.mem[10] = 8'b10100010;
         uut.mem_inst.mem[11] = 8'b01011000;
-        uut.mem_inst.mem[12] = 8'b11110001;
-        uut.mem_inst.mem[13] = 8'b11111010;
-        uut.mem_inst.mem[14] = 8'b01111110;
-        uut.mem_inst.mem[15] = 8'b01111110;
+        uut.mem_inst.mem[12] = 8'b11110001;  // set $t3, 1       (endereco de escrita)
+        uut.mem_inst.mem[13] = 8'b01101110;  // sw $t1, $t3      (mem[1] = fib(n))
+        uut.mem_inst.mem[14] = 8'b11111010;  // set $t3, 10      (debug: endereco 10)
+        uut.mem_inst.mem[15] = 8'b01111110;  // sw $t3, $t3      (debug: mem[10] = 10)
 
         uut.mem_dados.mem[1] = 0;
         
-        $monitor("Time=%0t PC=%h Inst=%h Op=%b Fn=%b R0=%h R1=%h R2=%h R3=%h ULA=%h Z=%b C1=%b Mem[1]=%d tst=%h",
+        $monitor("Time=%0t PC=%h Inst=%h Op=%b Fn=%b R0=%h R1=%h R2=%h R3=%h ULA=%h Z=%b C1=%b Mem[1]=%d",
                  $time, uut.PCatual, uut.instrucao, uut.opcode, uut.funct,
                  uut.registradores.mem[0], uut.registradores.mem[1], uut.registradores.mem[2], uut.registradores.mem[3],
-                 uut.saida_ula, uut.zero, uut.c1, uut.mem_dados.mem[1], uut.mem_dados.mem[10]);
+                 uut.saida_ula, uut.zero, uut.c1, uut.mem_dados.mem[1]);
         
-        #200;
+        #1000;
         $display("=== SIMULACAO FINALIZADA ===");
         $finish;
     end

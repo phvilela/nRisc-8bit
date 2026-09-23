@@ -18,7 +18,7 @@ module BancoReg(
     mem[3] = 8'b00000000;
   end
 
-  always @(posedge clock) begin
+  always @(*) begin
     out1 = mem[in1];
     out2 = mem[in2];
   end
