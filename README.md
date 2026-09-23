@@ -144,7 +144,7 @@ test/
   UniControle.v      # control unit signal dump
   Wave_RegMem.v      # register file test (generates ondas.vcd)
 instrucoes.nrisc     # bit-level ISA specification (course material)
-run.sh               # compiles and runs the Fibonacci simulation
+run.sh               # compiles and runs the Fibonacci simulation (./run.sh [n])
 ```
 
 ## How to Run
@@ -152,10 +152,27 @@ run.sh               # compiles and runs the Fibonacci simulation
 Requirements: [Icarus Verilog](http://iverilog.icarus.com/) (`iverilog`, `vvp`).
 
 ```bash
-./run.sh                  # runs test/fib-test.v
-# or manually:
-iverilog src/*.v test/fib-test.v && vvp a.out
+./run.sh                  # Fibonacci with n = 10 (default)
+./run.sh 13               # Fibonacci with n = 13
+# or manually — n is a runtime plusarg, no recompilation needed:
+iverilog src/*.v test/fib-test.v && vvp a.out +N=12
 ```
+
+### Choosing `n` from the command line
+
+The Fibonacci testbench accepts the sequence index as a **plusarg**:
+
+```bash
+vvp a.out +N=<n>
+```
+
+- `n` defaults to `10` when omitted (`$value$plusargs`).
+- Valid range: `0 ≤ n ≤ 13`. The testbench loads `n` into data-memory
+  address `0x00`, scales the simulation time with `n` (`8n + 8` clock
+  cycles) and prints a summary line: `fib(n) = <result> (mem[1])`.
+- Values above `13` are rejected with an explicit error: `fib(14) = 377`
+  does not fit in the nRisc's 8-bit datapath (`fib(13) = 233` is the
+  largest representable value).
 
 Unit tests:
 
@@ -168,8 +185,9 @@ iverilog src/*.v test/Wave_RegMem.v && vvp a.out   # register file (ondas.vcd)
 ## Example Program: Fibonacci
 
 `test/fib-test.v` loads the program below. It reads `n` from data-memory
-address `0x00` and stores `fib(n)` at address `0x01` (the first data word is
-the sequence index, the second receives the computed value).
+address `0x00` (configurable on the command line — see [How to Run](#how-to-run))
+and stores `fib(n)` at address `0x01` (the first data word is the sequence
+index, the second receives the computed value).
 
 | Addr | Word | Instruction | Comment |
 |---|---|---|---|
@@ -190,13 +208,14 @@ the sequence index, the second receives the computed value).
 | 0x0E | `0xFA` | `set $t3, 10` | debug: address `0x0A` |
 | 0x0F | `0x7E` | `sw $t3, $t3` | debug: `mem[10] = 10` |
 
-With `n = 10` the simulation ends with:
+With `n = 10` (default) the simulation ends with:
 
 ```
-R1=37  Mem[1]= 55  tst=0a
+fib(10) = 55 (mem[1])
 ```
 
-i.e. `mem[1] = 55 = fib(10)` and the debug store `mem[10] = 10`.
+i.e. `mem[1] = 55 = fib(10)`; the debug store leaves `mem[10] = 10`.
+Other examples: `./run.sh 12` → `fib(12) = 144`, `./run.sh 13` → `fib(13) = 233`.
 
 ### Note on the `sw` encoding
 

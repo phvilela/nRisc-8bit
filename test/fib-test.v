@@ -2,6 +2,7 @@
 
 module testbench_processador;
     reg clock;
+    integer n;
     
     processador uut (
         .clock(clock)
@@ -20,9 +21,16 @@ module testbench_processador;
 
         clock = 0;
         
+        // n-esimo numero de fibonacci: passar +N=<valor> ao vvp (padrao: 10)
+        if (!$value$plusargs("N=%d", n)) n = 10;
+        if (n < 0 || n > 13) begin
+            $display("ERRO: fib(%0d) nao cabe em 8 bits (maximo: fib(13)=233)", n);
+            $finish;
+        end
+        
         // Inicializacao dos registradores e memorias
         uut.PC_reg.PCout = 8'b00000000;
-        uut.mem_dados.mem[0] = 8'd10;
+        uut.mem_dados.mem[0] = n[7:0];
         
         uut.mem_inst.mem[0]  = 8'b11110000;
         uut.mem_inst.mem[1]  = 8'b01111111;
@@ -48,7 +56,8 @@ module testbench_processador;
                  uut.registradores.mem[0], uut.registradores.mem[1], uut.registradores.mem[2], uut.registradores.mem[3],
                  uut.saida_ula, uut.zero, uut.c1, uut.mem_dados.mem[1]);
         
-        #1000;
+        #(10*(12 + 8*n));
+        $display("fib(%0d) = %0d (mem[1])", n, uut.mem_dados.mem[1]);
         $display("=== SIMULACAO FINALIZADA ===");
         $finish;
     end
